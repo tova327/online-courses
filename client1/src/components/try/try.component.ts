@@ -1,7 +1,8 @@
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user service/user.service';
+import { VisibilityService } from '../../services/visibility.service'; 
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -16,13 +17,20 @@ import { UserType } from '../../models/types';
 export class TryComponent {
   @ViewChild('dialogTemplate') dialogTemplate!: TemplateRef<any>;
   @ViewChild('loginTemplate') loginTemplate!: TemplateRef<any>;
-  @Input() close:Function
-  @Input() isTeacher:Function
+  
   registerForm: FormGroup;
   loginForm: FormGroup;
-  user:UserType|undefined
+  user: UserType | undefined;
+  isIn: boolean = false;
+  isTeacher: boolean = false;
+  private dialogRef: MatDialogRef<any> | null = null; // Store the dialog reference
 
-  constructor(private fb: FormBuilder, private userService: UserService, private dialog: MatDialog) {
+  constructor(
+    private fb: FormBuilder, 
+    private userService: UserService, 
+    private dialog: MatDialog,
+    private visibilityService: VisibilityService 
+  ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -37,11 +45,11 @@ export class TryComponent {
   }
 
   openSignUp() {
-    this.dialog.open(this.dialogTemplate);
+    this.dialogRef = this.dialog.open(this.dialogTemplate); // Store the reference
   }
 
   openSignIn() {
-    this.dialog.open(this.loginTemplate);
+    this.dialogRef = this.dialog.open(this.loginTemplate); // Store the reference
   }
 
   signIn() {
@@ -54,11 +62,15 @@ export class TryComponent {
     if (this.registerForm.valid) {
       console.log("valid");
       const role = this.registerForm.get('role')?.value;
-      if(role!=='student'){
-        this.isTeacher()
+      if (role !== 'student') {
+        this.isTeacher = true;
       }
       this.userService.addUser(this.registerForm.value);
-      this.close()// Handle successful registration
+      this.isIn = true; // Handle successful registration
+      this.visibilityService.hide(); // Hide the TryComponent
+      if (this.dialogRef) {
+        this.dialogRef.close(); // Close the dialog
+      }
     }
   }
 
@@ -68,13 +80,17 @@ export class TryComponent {
     if (this.loginForm.valid) {
       console.log("Login valid");
       this.userService.loginUser(this.loginForm.value);
-      const userDetails=this.userService.getUserDetails()
-      this.userService.getUserDetails().subscribe(data=>{this.user=data
-        if(this.user.role&&this.user.role!=='student'){
-          this.isTeacher()
+      this.userService.getUserDetails().subscribe(data => {
+        this.user = data;
+        if (this.user.role && this.user.role !== 'student') {
+          this.isTeacher = true;
         }
-      })
-      this.close()// Handle successful login
+      });
+      this.isIn = true; // Handle successful login
+      this.visibilityService.hide(); // Hide the TryComponent
+      if (this.dialogRef) {
+        this.dialogRef.close(); // Close the dialog
+      }
     }
   }
 }

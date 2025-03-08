@@ -8,10 +8,10 @@ import { AppLayoutComponent } from "../components/app-layout/app-layout.componen
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, ReactiveFormsModule, TryComponent, FormsModule, AppLayoutComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, AppLayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'client';
+  title = 'online courses';
 }

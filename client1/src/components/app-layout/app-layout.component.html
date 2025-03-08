@@ -1,23 +1,9 @@
 <p>app-layout works!</p>
 
-@if(!isIn){
-    <app-try (close)="comeIn()" (isTeacher)="changeIsTeacher()"></app-try>
+@if(isTryVisible){
+    <app-try></app-try>
 }
 @else {
-    <mat-tab-group dynamicHeight>
-        <mat-tab label="follow our courses">
-          <div class="mat-elevation-z4">
-            <app-allcourses></app-allcourses>
-          </div>
-        </mat-tab>
-        @if(isTeacher){
-        <mat-tab label="manage courses & lessons">
-          <div class="mat-elevation-z4">
-            <app-course-management></app-course-management>
-          </div>
-        </mat-tab>}
-    </mat-tab-group>
-
-
+    <app-in-applayout></app-in-applayout>
 }
 

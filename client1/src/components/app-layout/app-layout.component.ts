@@ -1,26 +1,29 @@
-import { Component } from '@angular/core';
-import { AllcoursesComponent } from '../allcourses/allcourses.component';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TryComponent } from "../try/try.component";
 import {MatTabsModule} from '@angular/material/tabs';
-import { CourseManagementComponent } from "../course-management/course-management.component";
+import { VisibilityService } from '../../services/visibility.service';
+import { InApplayoutComponent } from "../in-applayout/in-applayout.component";
+import { UserService } from '../../services/user service/user.service';
 @Component({
   selector: 'app-app-layout',
-  imports: [TryComponent, MatTabsModule, AllcoursesComponent, CourseManagementComponent],
+  imports: [TryComponent, MatTabsModule,  InApplayoutComponent],
    
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.css'
 })
-export class AppLayoutComponent {
-  isIn:boolean=false
-  isTeacher:boolean=false
-  comeIn(){
-    console.log("comein");
-    
-    this.isIn=true
+export class AppLayoutComponent implements OnInit ,OnDestroy{
+  isTryVisible: boolean = true;
+
+  constructor(private visibilityService: VisibilityService,private userService:UserService) {}
+  ngOnDestroy(): void {
+    this.userService.clearFromLocalStorage()
   }
-  changeIsTeacher(){
-    console.log("isteacher");
-    this.isTeacher=true
+
+  ngOnInit(): void {
+    this.visibilityService.isVisible$.subscribe(isVisible => {
+      console.log('isTryVisible:', isVisible);
+        this.isTryVisible = isVisible;
+    });
   }
 
 }

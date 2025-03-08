@@ -39,7 +39,9 @@ export class UserService {
     }
     return {token:'',id:-1}
   }
-
+  clearFromLocalStorage(){
+    localStorage.removeItem('currentUser')
+  }
   getUserDetails():Observable<UserType>{
     const {token,id}=this.getFromLocalStorage()
     const URL="http://localhost:3000/api/users/"+id
