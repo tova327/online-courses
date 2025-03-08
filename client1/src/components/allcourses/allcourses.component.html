@@ -1,0 +1,20 @@
+<p>allcourses works!</p>
+<mat-nav-list>
+    
+  
+@for(course of (courses$ | async); track course.id)
+{
+    <div mat-list-item>
+    <a matListItemTitle [routerLink]="['/course', course.id]">{{ course.title }}</a>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="joinCourse(course.id)" matListItemMeta>Join</button>
+        <button mat-raised-button color="warn" (click)="leaveCourse(course.id)" matListItemMeta>Leave</button>
+    </mat-card-actions>
+    </div>
+}
+@empty{
+    <div>אנחנו טוענים בשבילך את הנתונים</div>
+}
+</mat-nav-list>
+<router-outlet></router-outlet>
+
