@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { RoleService } from '../../services/role.service';
+import { RoleService } from '../../services/role-service.service';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { AllcoursesComponent } from '../allcourses/allcourses.component';
+import { CourseManagementComponent } from '../course-management/course-management.component';
+
 
 @Component({
   selector: 'app-inner-app-layout',
+  imports:[MatTab,MatTabGroup,AllcoursesComponent,CourseManagementComponent],
   templateUrl: './inner-app-layout.component.html',
   styleUrls: ['./inner-app-layout.component.css']
 })

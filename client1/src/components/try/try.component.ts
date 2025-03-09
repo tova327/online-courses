@@ -1,15 +1,14 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user service/user.service';
-import { VisibilityService } from '../../services/visibility.service'; 
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { UserType } from '../../models/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RoleService } from '../../services/role.service';
 import { Router } from '@angular/router'; // Import Router
+import { RoleService } from '../../services/role-service.service';
 
 @Component({
   selector: 'app-try',
@@ -30,7 +29,7 @@ export class TryComponent {
     private fb: FormBuilder, 
     private userService: UserService, 
     private dialog: MatDialog,
-    private visibilityService: VisibilityService,
+    
     private snackBar: MatSnackBar,
     private roleService: RoleService,
     private router: Router // Inject Router
@@ -62,7 +61,7 @@ export class TryComponent {
       this.roleService.changeRole(role); // Update role in RoleService
       try {
         await this.userService.addUser(this.registerForm.value);
-        this.visibilityService.hide();
+       
         this.router.navigate(['/inner-app']); // Navigate to InnerAppLayoutComponent
         if (this.dialogRef) {
           this.dialogRef.close();
@@ -80,7 +79,7 @@ export class TryComponent {
         const data = await this.userService.getUserDetails().toPromise();
         this.user = data;
         this.roleService.changeRole(this.user.role); // Update role in RoleService
-        this.visibilityService.hide();
+        
         this.router.navigate(['/inner-app']); // Navigate to InnerAppLayoutComponent
         if (this.dialogRef) {
           this.dialogRef.close();

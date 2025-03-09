@@ -1,9 +1,10 @@
 <mat-tab-group>
     <mat-tab label="All Courses">
-      <app-all-courses></app-all-courses>
+      <app-allcourses></app-allcourses>
     </mat-tab>
-    <mat-tab *ngIf="showCourseManagement" label="Course Management">
+    @if (showCourseManagement) {
+    <mat-tab  label="Course Management">
       <app-course-management></app-course-management>
-    </mat-tab>
-  </mat-tab-group>
+    </mat-tab>}
+</mat-tab-group>
   
