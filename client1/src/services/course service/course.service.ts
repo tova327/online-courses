@@ -15,6 +15,7 @@ export class CourseService {
   public courses$ = this.coursesSubject.asObservable();
   getAll(){
     const token=this.userService.getFromLocalStorage().token
+    console.log("token = "+token );
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -24,6 +25,7 @@ export class CourseService {
   getCourseById(id:number):Observable<CourseType>{
     const URL=`http://localhost:3000/api/courses/${id}` 
     const token=this.userService.getFromLocalStorage().token
+    console.log("token = "+token );
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -36,7 +38,7 @@ export class CourseService {
   joinCourse(idCourse:number){
     
     const {token, id:userId}=this.userService.getFromLocalStorage()
-
+    console.log("token = "+token );
     const URL=`http://localhost:3000/api/courses/${idCourse}/enroll`
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
@@ -50,7 +52,7 @@ export class CourseService {
   }
   leaveCourse(idCourse:number){
     const {token, id:userId}=this.userService.getFromLocalStorage()
-
+    console.log("token = "+token );
     const URL=`http://localhost:3000/api/courses/${idCourse}/unenroll`
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
@@ -67,6 +69,7 @@ export class CourseService {
 
   getLessons(courseId:number):Observable<LessonType[]>{
     const {token}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const URL=`http://localhost:3000/api/courses/${courseId}/lessons`
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -78,6 +81,7 @@ export class CourseService {
   newCourse(title:string,description:string){
     const URL="http://localhost:3000/api/courses"
     const {token,id}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -93,6 +97,7 @@ export class CourseService {
   updateCourse(title:string,description:string,courseId:number){
     const URL=`http://localhost:3000/api/courses/${courseId}`
     const {token,id}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -106,6 +111,7 @@ export class CourseService {
 
   deleteCourse(courseId:number){
     const {token}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const URL=`http://localhost:3000/api/courses/${courseId}`
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -117,6 +123,7 @@ export class CourseService {
   newLesson(courseId:number,title:string,content:string){
     const URL=`http://localhost:3000/api/courses/${courseId}/lessons`
     const {token}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -131,6 +138,7 @@ export class CourseService {
   updateLesson(title:string,content:string,courseId:number,lessonId:number){
     const URL=`http://localhost:3000/api/courses/${courseId}/lessons/${lessonId}`
     const {token}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -144,6 +152,7 @@ export class CourseService {
 
   deleteLesson(courseId:number,lessonId:number){
     const {token}=this.userService.getFromLocalStorage()
+    console.log("token = "+token );
     const URL=`http://localhost:3000/api/courses/${courseId}/lessons/${lessonId}`
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`

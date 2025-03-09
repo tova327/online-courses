@@ -1,8 +1,11 @@
-@if(isLoggedIn){
-<div >
+<!-- @if(isLoggedIn===false){
+    
+        <app-try (onLogin)="login()"></app-try>
+    
+}@else{<div >
     <app-inner-app-layout></app-inner-app-layout>
-</div>}@else{
-  <ng-template #tryTemplate>
-    <app-try (onLogin)="login()"></app-try>
-  </ng-template>}
+</div>
+} -->
+
+<router-outlet></router-outlet>
   

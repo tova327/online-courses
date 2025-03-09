@@ -7,7 +7,6 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { UserType } from '../../models/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { RoleService } from '../../services/role-service.service';
 
 @Component({
@@ -33,7 +32,7 @@ export class TryComponent {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private roleService: RoleService,
-    private router: Router
+    
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -61,10 +60,11 @@ export class TryComponent {
       const role = this.registerForm.get('role')?.value;
       this.roleService.changeRole(role);
       try {
-        await this.userService.addUser(this.registerForm.value);
-        this.router.navigate(['/inner-app']);
+        await this.userService.addUser(this.registerForm.value)
+        
         if (this.dialogRef) {
           this.dialogRef.close();
+          
         }
       } catch (error) {
         this.openSnackBar("Registration failed! Please try again.");
@@ -80,9 +80,10 @@ export class TryComponent {
         this.user = data;
         this.roleService.changeRole(this.user!!.role!!);
         this.onLogin.emit();
-        this.router.navigate(['/inner-app']);
+        
         if (this.dialogRef) {
           this.dialogRef.close();
+          
         }
       } catch (error) {
         this.openSnackBar("Login failed! Please try again.");
@@ -92,7 +93,7 @@ export class TryComponent {
 
   openSnackBar(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 3000,
+      duration: 3000
     });
   }
 }

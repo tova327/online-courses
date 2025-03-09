@@ -12,5 +12,5 @@ export const routes: Routes = [
     { path: 'courses', component: AllcoursesComponent },
     { path: 'manage-courses', component: CourseManagementComponent },
     { path: 'try', component: TryComponent },
-  { path: 'inner-app', component: InnerAppLayoutComponent },
+  { path: 'inner-app', component: InnerAppLayoutComponent }
 ];
