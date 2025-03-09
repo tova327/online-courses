@@ -18,14 +18,15 @@ export class UserService {
     localStorage.setItem('currentUser', userJson);
   }
   addUser(item: UserType) {
-     this.http.post(this.apiURL, item).subscribe((response)=>{
+
+     this.http.post(this.apiURL, item).subscribe((response: any)=>{
       console.log(response);
       this.saveToLocalStorage(response)
      });
   }
   loginUser(user:UserType){
     const URL="http://localhost:3000/api/auth/login"
-    this.http.post(URL, user).subscribe((response)=>{
+    this.http.post(URL, user).subscribe((response: any)=>{
       console.log(response);
       this.saveToLocalStorage(response)
      });
@@ -56,3 +57,5 @@ export class UserService {
 
    
 }
+
+
