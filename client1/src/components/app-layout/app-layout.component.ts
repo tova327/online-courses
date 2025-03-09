@@ -6,7 +6,7 @@ import { InnerAppLayoutComponent } from '../inner-app-layout/inner-app-layout.co
 
 @Component({
   selector: 'app-app-layout',
-  imports:[TryComponent,InnerAppLayoutComponent],
+  imports: [TryComponent, InnerAppLayoutComponent],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.css']
 })
@@ -23,9 +23,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.isLoggedIn = this.userService.isLoggedIn();
   }
 
-  // This method should be called after the user logs in
   login() {
     this.isLoggedIn = true;
-    this.router.navigate(['/inner-app']);
   }
 }

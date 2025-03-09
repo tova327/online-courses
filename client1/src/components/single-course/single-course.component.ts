@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { Component, OnInit } from '@angular/core';
+import { MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { CourseService } from '../../services/course service/course.service';
 import { CourseType, LessonType } from '../../models/types';
 import { ActivatedRoute } from '@angular/router';
@@ -8,7 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; //
 
 @Component({
   selector: 'app-single-course',
-  imports: [MatCardHeader, MatCardSubtitle, MatCardTitle, MatCardContent, MatList, MatListItem,MatSnackBarModule],
+  imports: [MatCardHeader, MatCardSubtitle, MatCardTitle, MatCardContent, MatList, MatListItem, MatSnackBarModule],
   templateUrl: './single-course.component.html',
   styleUrls: ['./single-course.component.css'] // Corrected styleUrl to styleUrls
 })
@@ -28,7 +28,7 @@ export class SingleCourseComponent implements OnInit {
 
         try {
           this.course = await this.courseService.getCourseById(this.courseId).toPromise(); // Convert Observable to Promise
-          this.lessons = await this.courseService.getLessons(this.courseId).toPromise(); // Convert Observable to Promise
+          this.lessons = (await this.courseService.getLessons(this.courseId).toPromise()) || []; // Ensure lessons is always an array
         } catch (error) {
           this.openSnackBar("Failed to load course details. Please try again."); // Show error message
         }

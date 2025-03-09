@@ -78,7 +78,7 @@ export class TryComponent {
         await this.userService.loginUser(this.loginForm.value);
         const data = await this.userService.getUserDetails().toPromise();
         this.user = data;
-        this.roleService.changeRole(this.user.role);
+        this.roleService.changeRole(this.user!!.role!!);
         this.onLogin.emit();
         this.router.navigate(['/inner-app']);
         if (this.dialogRef) {
