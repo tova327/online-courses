@@ -3,7 +3,7 @@ import { CourseType, LessonType } from '../../models/types';
 import { CourseService } from '../../services/course service/course.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
+import {MatButton, MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -14,7 +14,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatListModule],
+    MatListModule,
+    MatButton],
   templateUrl: './course-management.component.html',
   styleUrl: './course-management.component.css'
 })

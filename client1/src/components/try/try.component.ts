@@ -8,10 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { UserType } from '../../models/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleService } from '../../services/role-service.service';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-try',
-  imports: [MatFormField, MatLabel, MatSelect, MatOption, ReactiveFormsModule, MatInputModule],
+  imports: [MatFormField, MatLabel, MatSelect, MatOption, ReactiveFormsModule, MatInputModule,MatButton],
   templateUrl: './try.component.html',
   styleUrls: ['./try.component.css']
 })

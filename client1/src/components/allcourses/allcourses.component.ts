@@ -3,14 +3,13 @@ import { CourseService } from '../../services/course service/course.service';
 import { CourseType } from '../../models/types';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { SingleCourseComponent } from "../single-course/single-course.component";
-import { routes } from '../../app/app.routes';
 import { RouterModule } from '@angular/router';
 import {MatListModule} from '@angular/material/list';
 import { MatCardActions } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
 @Component({
   selector: 'app-allcourses',
-  imports: [AsyncPipe, RouterModule, MatListModule, MatCardActions],
+  imports: [AsyncPipe, RouterModule, MatListModule, MatCardActions,MatButton],
   templateUrl: './allcourses.component.html',
   styleUrl: './allcourses.component.css'
 })

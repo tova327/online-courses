@@ -6,7 +6,7 @@ import { InnerAppLayoutComponent } from '../inner-app-layout/inner-app-layout.co
 
 @Component({
   selector: 'app-app-layout',
-  imports: [TryComponent, InnerAppLayoutComponent,RouterOutlet],
+  imports: [RouterOutlet],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.css']
 })
