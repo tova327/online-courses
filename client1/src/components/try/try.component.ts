@@ -2,7 +2,7 @@ import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user service/user.service';
-import { VisibilityService } from '../../services/visibility.service'; 
+
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { UserType } from '../../models/types';
 
 @Component({
   selector: 'app-try',
+  standalone:true,
   imports: [MatFormField, MatLabel, MatSelect, MatOption, ReactiveFormsModule, MatInputModule],
   templateUrl: './try.component.html',
   styleUrls: ['./try.component.css']
@@ -29,7 +30,7 @@ export class TryComponent {
     private fb: FormBuilder, 
     private userService: UserService, 
     private dialog: MatDialog,
-    private visibilityService: VisibilityService 
+    
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -67,7 +68,7 @@ export class TryComponent {
       }
       this.userService.addUser(this.registerForm.value);
       this.isIn = true; // Handle successful registration
-      this.visibilityService.hide(); // Hide the TryComponent
+       // Hide the TryComponent
       if (this.dialogRef) {
         this.dialogRef.close(); // Close the dialog
       }
@@ -87,7 +88,7 @@ export class TryComponent {
         }
       });
       this.isIn = true; // Handle successful login
-      this.visibilityService.hide(); // Hide the TryComponent
+       // Hide the TryComponent
       if (this.dialogRef) {
         this.dialogRef.close(); // Close the dialog
       }
