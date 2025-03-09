@@ -1,9 +1,7 @@
-
-
-
-    <app-try></app-try>
-
-
+@if(isLoggedIn){
+<div >
     <app-inner-app-layout></app-inner-app-layout>
-
-
+</div>}@else{
+  <ng-template #tryTemplate>
+    <app-try (onLogin)="login()"></app-try>
+  </ng-template>}

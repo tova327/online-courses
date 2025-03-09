@@ -14,4 +14,5 @@ import { AppLayoutComponent } from "../components/app-layout/app-layout.componen
 })
 export class AppComponent {
   title = 'online courses';
+  
 }

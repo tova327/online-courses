@@ -1,25 +1,31 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TryComponent } from "../try/try.component";
-import {MatTabsModule} from '@angular/material/tabs';
 import { UserService } from '../../services/user service/user.service';
+import { Router } from '@angular/router';
+import { TryComponent } from '../try/try.component';
 import { InnerAppLayoutComponent } from '../inner-app-layout/inner-app-layout.component';
+
 @Component({
   selector: 'app-app-layout',
-  imports: [TryComponent, MatTabsModule,InnerAppLayoutComponent],
-   
+  imports:[TryComponent,InnerAppLayoutComponent],
   templateUrl: './app-layout.component.html',
-  styleUrl: './app-layout.component.css'
+  styleUrls: ['./app-layout.component.css']
 })
-export class AppLayoutComponent implements OnInit ,OnDestroy{
-  
+export class AppLayoutComponent implements OnInit, OnDestroy {
+  isLoggedIn = false; // Initial login status
 
-  constructor(private userService:UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
+
   ngOnDestroy(): void {
-    this.userService.clearFromLocalStorage()
+    this.userService.clearFromLocalStorage();
   }
 
   ngOnInit(): void {
-    
+    this.isLoggedIn = this.userService.isLoggedIn();
   }
 
+  // This method should be called after the user logs in
+  login() {
+    this.isLoggedIn = true;
+    this.router.navigate(['/inner-app']);
+  }
 }

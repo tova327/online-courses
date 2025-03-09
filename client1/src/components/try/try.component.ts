@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user service/user.service';
@@ -7,7 +7,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { UserType } from '../../models/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
 import { RoleService } from '../../services/role-service.service';
 
 @Component({
@@ -19,20 +19,21 @@ import { RoleService } from '../../services/role-service.service';
 export class TryComponent {
   @ViewChild('dialogTemplate') dialogTemplate!: TemplateRef<any>;
   @ViewChild('loginTemplate') loginTemplate!: TemplateRef<any>;
-  
+
+  @Output() onLogin = new EventEmitter<void>();
+
   registerForm: FormGroup;
   loginForm: FormGroup;
   user: UserType | undefined;
   private dialogRef: MatDialogRef<any> | null = null;
 
   constructor(
-    private fb: FormBuilder, 
-    private userService: UserService, 
+    private fb: FormBuilder,
+    private userService: UserService,
     private dialog: MatDialog,
-    
     private snackBar: MatSnackBar,
     private roleService: RoleService,
-    private router: Router // Inject Router
+    private router: Router
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -58,11 +59,10 @@ export class TryComponent {
   async onSubmit() {
     if (this.registerForm.valid) {
       const role = this.registerForm.get('role')?.value;
-      this.roleService.changeRole(role); // Update role in RoleService
+      this.roleService.changeRole(role);
       try {
         await this.userService.addUser(this.registerForm.value);
-       
-        this.router.navigate(['/inner-app']); // Navigate to InnerAppLayoutComponent
+        this.router.navigate(['/inner-app']);
         if (this.dialogRef) {
           this.dialogRef.close();
         }
@@ -78,9 +78,9 @@ export class TryComponent {
         await this.userService.loginUser(this.loginForm.value);
         const data = await this.userService.getUserDetails().toPromise();
         this.user = data;
-        this.roleService.changeRole(this.user.role); // Update role in RoleService
-        
-        this.router.navigate(['/inner-app']); // Navigate to InnerAppLayoutComponent
+        this.roleService.changeRole(this.user.role);
+        this.onLogin.emit();
+        this.router.navigate(['/inner-app']);
         if (this.dialogRef) {
           this.dialogRef.close();
         }
