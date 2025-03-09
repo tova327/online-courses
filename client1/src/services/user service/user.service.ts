@@ -8,12 +8,13 @@ import { UserType } from '../../models/types';
 })
 export class UserService {
   apiURL = "http://localhost:3000/api/auth/register";
-  
+  private isIn=false
+  private aboutUser:any
   constructor(private http: HttpClient) {}
 
   saveToLocalStorage(data: any) {
-    const userJson = JSON.stringify(data);
-    localStorage.setItem('currentUser', userJson);
+    this.isIn=true
+    this.aboutUser=data
   }
 
   addUser(item: UserType) {
@@ -32,17 +33,23 @@ export class UserService {
   }
 
   getFromLocalStorage() {
-    const userJson = localStorage.getItem('currentUser');
-    if (userJson) {
-      const user = JSON.parse(userJson);
-      console.log(user);
-      return { token: user.token, id: user.userId };
-    }
+    // const userJson = localStorage.getItem('currentUser');
+    // if (userJson) {
+    //   const user = JSON.parse(userJson);
+    //   console.log(user);
+    //   return { token: user.token, id: user.userId };
+    // }
+    // return { token: '', id: -1 };
+
+    if(this.isIn)
+      return { token: this.aboutUser.token, id: this.aboutUser.userId }
     return { token: '', id: -1 };
   }
 
   clearFromLocalStorage() {
-    localStorage.removeItem('currentUser');
+    //localStorage.removeItem('currentUser');
+
+    this.isIn=false
   }
 
   getUserDetails(): Observable<UserType> {
@@ -57,7 +64,6 @@ export class UserService {
   }
 
   isLoggedIn(): boolean {
-    const { token, id } = this.getFromLocalStorage();
-    return !!token && id !== -1;
+    return this.isIn
   }
 }
