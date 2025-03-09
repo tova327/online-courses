@@ -4,33 +4,43 @@ import { CourseService } from '../../services/course service/course.service';
 import { CourseType, LessonType } from '../../models/types';
 import { ActivatedRoute } from '@angular/router';
 import { MatList, MatListItem } from '@angular/material/list';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar for error messages
+
 @Component({
   selector: 'app-single-course',
-  imports: [MatCardHeader, MatCardSubtitle, MatCardTitle,MatCardContent,MatList,MatListItem],
+  imports: [MatCardHeader, MatCardSubtitle, MatCardTitle, MatCardContent, MatList, MatListItem,MatSnackBarModule],
   templateUrl: './single-course.component.html',
-  styleUrl: './single-course.component.css'
+  styleUrls: ['./single-course.component.css'] // Corrected styleUrl to styleUrls
 })
-export class SingleCourseComponent implements OnInit{
+export class SingleCourseComponent implements OnInit {
   
   courseId!: number; // Course ID
-  
+  lessons: LessonType[] = []; // Initialize lessons
+  course: CourseType | undefined; // Initialize course
 
-  lessons:LessonType[]
-  course:CourseType
-  constructor(private courseService:CourseService,private route: ActivatedRoute) {
-  }
-  ngOnInit(){
-    this.route.paramMap.subscribe((params) => {
+  constructor(private courseService: CourseService, private route: ActivatedRoute, private snackBar: MatSnackBar) { }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(async (params) => {
       const id = params.get('courseId');
       if (id) {
         this.courseId = +id;
 
-        this.courseService.getCourseById(this.courseId).subscribe((data)=>this.course=data)
-        this.courseService.getLessons(this.courseId).subscribe((data)=>this.lessons=data)
+        try {
+          this.course = await this.courseService.getCourseById(this.courseId).toPromise(); // Convert Observable to Promise
+          this.lessons = await this.courseService.getLessons(this.courseId).toPromise(); // Convert Observable to Promise
+        } catch (error) {
+          this.openSnackBar("Failed to load course details. Please try again."); // Show error message
+        }
       } else {
-        console.error('Product ID not found');
+        console.error('Course ID not found');
       }
     });
   }
 
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+  }
 }

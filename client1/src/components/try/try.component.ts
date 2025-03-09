@@ -7,6 +7,9 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { UserType } from '../../models/types';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RoleService } from '../../services/role.service';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-try',
@@ -21,15 +24,16 @@ export class TryComponent {
   registerForm: FormGroup;
   loginForm: FormGroup;
   user: UserType | undefined;
-  isIn: boolean = false;
-  isTeacher: boolean = false;
-  private dialogRef: MatDialogRef<any> | null = null; // Store the dialog reference
+  private dialogRef: MatDialogRef<any> | null = null;
 
   constructor(
     private fb: FormBuilder, 
     private userService: UserService, 
     private dialog: MatDialog,
-    private visibilityService: VisibilityService 
+    private visibilityService: VisibilityService,
+    private snackBar: MatSnackBar,
+    private roleService: RoleService,
+    private router: Router // Inject Router
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,52 +49,51 @@ export class TryComponent {
   }
 
   openSignUp() {
-    this.dialogRef = this.dialog.open(this.dialogTemplate); // Store the reference
+    this.dialogRef = this.dialog.open(this.dialogTemplate);
   }
 
   openSignIn() {
-    this.dialogRef = this.dialog.open(this.loginTemplate); // Store the reference
+    this.dialogRef = this.dialog.open(this.loginTemplate);
   }
 
-  signIn() {
-    this.openSignIn();
-  }
-
-  onSubmit() {
-    console.log("on submit");
-    
+  async onSubmit() {
     if (this.registerForm.valid) {
-      console.log("valid");
       const role = this.registerForm.get('role')?.value;
-      if (role !== 'student') {
-        this.isTeacher = true;
-      }
-      this.userService.addUser(this.registerForm.value);
-      this.isIn = true; // Handle successful registration
-      this.visibilityService.hide(); // Hide the TryComponent
-      if (this.dialogRef) {
-        this.dialogRef.close(); // Close the dialog
+      this.roleService.changeRole(role); // Update role in RoleService
+      try {
+        await this.userService.addUser(this.registerForm.value);
+        this.visibilityService.hide();
+        this.router.navigate(['/inner-app']); // Navigate to InnerAppLayoutComponent
+        if (this.dialogRef) {
+          this.dialogRef.close();
+        }
+      } catch (error) {
+        this.openSnackBar("Registration failed! Please try again.");
       }
     }
   }
 
-  onLoginSubmit() {
-    console.log("Login submit");
-
+  async onLoginSubmit() {
     if (this.loginForm.valid) {
-      console.log("Login valid");
-      this.userService.loginUser(this.loginForm.value);
-      this.userService.getUserDetails().subscribe(data => {
+      try {
+        await this.userService.loginUser(this.loginForm.value);
+        const data = await this.userService.getUserDetails().toPromise();
         this.user = data;
-        if (this.user.role && this.user.role !== 'student') {
-          this.isTeacher = true;
+        this.roleService.changeRole(this.user.role); // Update role in RoleService
+        this.visibilityService.hide();
+        this.router.navigate(['/inner-app']); // Navigate to InnerAppLayoutComponent
+        if (this.dialogRef) {
+          this.dialogRef.close();
         }
-      });
-      this.isIn = true; // Handle successful login
-      this.visibilityService.hide(); // Hide the TryComponent
-      if (this.dialogRef) {
-        this.dialogRef.close(); // Close the dialog
+      } catch (error) {
+        this.openSnackBar("Login failed! Please try again.");
       }
     }
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
   }
 }
